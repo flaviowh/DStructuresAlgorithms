@@ -4,4 +4,5 @@ def index_at(n, row,col):
 n = 5
 row = 3
 col = 3
-print(index_at(n, row,col))
+print(18 % n)
+

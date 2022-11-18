@@ -1,4 +1,5 @@
 package week1.UnionFind;
+
 // still too expensive
 
 public class QuickUnionUF {
