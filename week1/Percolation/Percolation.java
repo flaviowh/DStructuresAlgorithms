@@ -91,11 +91,11 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (!validNums(row, col, 1, N))
+        if (!validNums(row, col, 0, N))
             throw new IllegalArgumentException("'isFull': row / col out of range: " + row + " , " + col);
         row = row - 1;
         col = col - 1;
-        return isOpen(row, col) && isConnected(row * N + (col % N), 0);
+        return isOpen(row + 1, col + 1) && isConnected(row * N + (col % N), 0);
     }
 
     // returns the number of open sites

@@ -6,3 +6,4 @@ row = 3
 col = 3
 print(18 % n)
 
+  
