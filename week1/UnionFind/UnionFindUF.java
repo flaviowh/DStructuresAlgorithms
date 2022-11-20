@@ -33,13 +33,6 @@ public class UnionFindUF {
     public int findLargestNeighbor(int i) {
         int iroot = root(i);
         return largestCount[iroot];
-        // int largest = 0;
-        // for(int j = 0; j < size; j++){
-        // if(id[j] == iroot){
-        // largest = j > largest? j : largest;
-        // }
-        // }
-        // return largest;
     }
 
     public void union(int p, int q) {

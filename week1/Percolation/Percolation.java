@@ -49,7 +49,7 @@ public class Percolation {
         if (row < 1 || row > N || col < 1 || col > N)
             throw new IllegalArgumentException("'Open': row / col out of range: " + row + " , " + col);
 
-        // Fix 1: the test system is indexed 1 ~ N + 1
+        // fix 1: the test system is indexed 1 ~ N + 1
         row = row - 1;
         col = col - 1;
 
@@ -80,11 +80,9 @@ public class Percolation {
         if (!validNums(row, col, 0, N))
             throw new IllegalArgumentException("'isOpen': row / col out of range: " + row + " , " + col);
 
-        // the platform tests are inconsistent for this method, 
-        // sometimes using 0 index inputs and other times 1 😢. 
-        row = row - 1;     
-        col = col - 1 ;
-
+        // fix 1
+        row = row - 1;
+        col = col - 1;
 
         return opened[row * N + (col % N)] == 1;
     }
@@ -95,7 +93,7 @@ public class Percolation {
             throw new IllegalArgumentException("'isFull': row / col out of range: " + row + " , " + col);
         row = row - 1;
         col = col - 1;
-        return isOpen(row + 1, col + 1) && isConnected(row * N + (col % N), 0);
+        return isOpen(row + 1, col + 1) && isConnected(row * N + (col % N), 0); // fix 1
     }
 
     // returns the number of open sites
@@ -105,7 +103,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return isConnected(matrix[0][1], matrix[N - 1][1]); // FIX
+        return isConnected(matrix[0][1], matrix[N - 1][1]); // fix 1
     }
 
     // test client (optional)
