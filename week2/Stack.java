@@ -1,5 +1,3 @@
-package week2;
-
 import java.util.Iterator;
 
 public class Stack<Item> implements Iterable<Item> {
@@ -44,7 +42,7 @@ public class Stack<Item> implements Iterable<Item> {
         public Item next() {
             Item item = current.item;
             current = current.next;
-            return item; 
+            return item;
         }
     }
 }

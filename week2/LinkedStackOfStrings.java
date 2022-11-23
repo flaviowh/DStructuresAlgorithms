@@ -1,5 +1,3 @@
-package week2;
-
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -23,7 +21,8 @@ public class LinkedStackOfStrings {
     }
 
     public String pop() {
-        if(first == null) return null;
+        if (first == null)
+            return null;
         String item = first.item;
         first = first.next;
         return item;

@@ -1,3 +1,7 @@
+import java.util.Arrays;
+
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class Training {
   
@@ -17,11 +21,8 @@ public class Training {
 
   public static void main(String[] args) {
     // return opened[row * N + (col % N)] == 1;
-
-    int row = 10;
-    int col = 1;
-    int N = 10;
-    int ans = row * N + (col % N);
-    System.out.println(ans);
+    Object[] arr = {1,2,null,3,4,null,5};
+    StdRandom.shuffle(arr);
+    StdOut.println(Arrays.toString(arr));
   }
 }
