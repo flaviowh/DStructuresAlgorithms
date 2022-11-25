@@ -73,7 +73,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int idx = n > 0 ? StdRandom.uniformInt(0, n) : 0;
         Item output = arr[idx];
         arr[idx] = null;
-        reshuffle();
+        if(n != arr.length -1){
+            Item swap = arr[n-1];
+            arr[idx] = swap;
+            arr[n-1] = null;
+        }
         // shrink size of array if necessary
         if (n-- > 0 && n == arr.length / 4)
             arr = resizeArray(arr.length / 2, arr);

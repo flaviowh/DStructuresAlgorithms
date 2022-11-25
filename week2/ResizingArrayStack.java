@@ -1,4 +1,4 @@
-
+package week2;
 /******************************************************************************
  *  Compilation:  javac ResizingArrayStack.java
  *  Execution:    java ResizingArrayStack < input.txt

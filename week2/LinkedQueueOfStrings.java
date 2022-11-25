@@ -1,5 +1,4 @@
 package week2;
-
 public class LinkedQueueOfStrings {
 
     private class Node {
@@ -8,7 +7,6 @@ public class LinkedQueueOfStrings {
     }
 
     private Node first, last;
-
 
     public boolean isEmpty() {
         return first == null;

@@ -1,5 +1,4 @@
 package week2;
-
 public class FixedCapacityStackOfStrings {
     private String[] s;
     private int N = 0;

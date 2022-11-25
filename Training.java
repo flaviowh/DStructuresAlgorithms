@@ -1,4 +1,7 @@
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
@@ -21,8 +24,16 @@ public class Training {
 
   public static void main(String[] args) {
     // return opened[row * N + (col % N)] == 1;
-    Object[] arr = {1,2,null,3,4,null,5};
-    StdRandom.shuffle(arr);
-    StdOut.println(Arrays.toString(arr));
+    Set<int[]> walked = new HashSet<int[]>();
+    int[] j = {3,2};
+    int[] c = {3,1};
+    int[] v = {3,2};
+    walked.add(j);
+    walked.add(c);
+    StdOut.println(walked.contains(j));
+
+    HashSet<List<Integer>> check = new HashSet<>();
+    check.add(List.of(1,2));
+    StdOut.println(check.contains(List.of(1,2)));
   }
 }

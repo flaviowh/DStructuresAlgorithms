@@ -1,3 +1,4 @@
+package week2;
 public class TwoStackQueue {
     // Hint: If you push elements onto a stack and then pop them all, they appear in
     // reverse order. If you repeat this process, they're now back in order.
