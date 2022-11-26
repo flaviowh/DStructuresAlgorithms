@@ -1,4 +1,4 @@
-package week2.sorting;
+package week3.sorting;
 
 import java.util.Arrays;
 
@@ -15,7 +15,7 @@ public class MergeSort {
         int i = lo, j = mid + 1;
         for (int k = lo; k <= hi; k++) {
             if (i > mid)
-                a[k] = aux[j++];
+                a[k] = aux[j++];               // 4,5,6,7   0,1,2,3
             else if (j > hi)
                 a[k] = aux[i++];
             else if (less(aux[j], aux[i]))
@@ -32,6 +32,8 @@ public class MergeSort {
         int mid = lo + (hi - lo) / 2;
         sort(a, aux, lo, mid);
         sort(a, aux, mid + 1, hi);
+        if (!less(a[mid + 1], a[mid])) // for performance
+            return; 
         merge(a, aux, lo, mid, hi);
     }
 

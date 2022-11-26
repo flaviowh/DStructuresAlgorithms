@@ -24,16 +24,8 @@ public class Training {
 
   public static void main(String[] args) {
     // return opened[row * N + (col % N)] == 1;
-    Set<int[]> walked = new HashSet<int[]>();
-    int[] j = {3,2};
-    int[] c = {3,1};
-    int[] v = {3,2};
-    walked.add(j);
-    walked.add(c);
-    StdOut.println(walked.contains(j));
+    int[] arr = {2,3,4,5,1,23,2};
 
-    HashSet<List<Integer>> check = new HashSet<>();
-    check.add(List.of(1,2));
-    StdOut.println(check.contains(List.of(1,2)));
+    StdOut.println(Arrays.toString(Arrays.copyOfRange(arr, 0, 3)));
   }
 }
