@@ -1,5 +1,4 @@
 package week3.assigment;
-
 /*************************************************************************
  *  Compilation:  javac LineSegment.java
  *  Execution:    none

@@ -1,5 +1,4 @@
 package week3.assigment;
-
 import java.util.Arrays;
 
 /******************************************************************************
@@ -19,14 +18,14 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Point implements Comparable<Point> {
 
-    private final int x;     // x-coordinate of this point
-    private final int y;     // y-coordinate of this point
+    private final int x; // x-coordinate of this point
+    private final int y; // y-coordinate of this point
 
     /**
      * Initializes a new point.
      *
-     * @param  x the <em>x</em>-coordinate of the point
-     * @param  y the <em>y</em>-coordinate of the point
+     * @param x the <em>x</em>-coordinate of the point
+     * @param y the <em>y</em>-coordinate of the point
      */
     public Point(int x, int y) {
         /* DO NOT MODIFY */
@@ -65,16 +64,16 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        
-        if (this.x == that.x){
-            return this.y == that.y? Double.NEGATIVE_INFINITY : 0.0;
+
+        if (this.x == that.x) {
+            return this.y == that.y ? Double.NEGATIVE_INFINITY : 0.0;
         }
-            
+
         double slope = (that.y - this.y) / (that.x - this.x);
 
         if (slope == 1)
             return Double.POSITIVE_INFINITY;
-        
+
         return slope;
     }
 
@@ -83,7 +82,7 @@ public class Point implements Comparable<Point> {
      * Formally, the invoking point (x0, y0) is less than the argument point
      * (x1, y1) if and only if either y0 < y1 or if y0 = y1 and x0 < x1.
      *
-     * @param  that the other point
+     * @param that the other point
      * @return the value <tt>0</tt> if this point is equal to the argument
      *         point (x0 = x1 and y0 = y1);
      *         a negative integer if this point is less than the argument
@@ -127,6 +126,7 @@ public class Point implements Comparable<Point> {
                 return 0;
         }
     }
+
     /**
      * Returns a string representation of this point.
      * This method is provide for debugging;
@@ -148,10 +148,10 @@ public class Point implements Comparable<Point> {
         Point three = new Point(0, 1);
         Point four = new Point(0, 1);
         StdOut.println(three.equals(four));
-        boolean test1 =  first.compareTo(second) < 0;
-        Point[] arr = {second, first, three};
+        boolean test1 = first.compareTo(second) < 0;
+        Point[] arr = { second, first, three };
         Arrays.sort(arr);
-        boolean test2 =  arr[0] == three;
-        StdOut.println(test1 && test2? "\npassed" : "did not pass");
+        boolean test2 = arr[0] == three;
+        StdOut.println(test1 && test2 ? "\npassed" : "did not pass");
     }
 }
