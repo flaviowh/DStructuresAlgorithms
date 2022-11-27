@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class MergeSort {
     static Comparable[] aux;
-    
+
     private static void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
         assert isSorted(a, lo, mid); // precondition: a[lo..mid] sorted
         assert isSorted(a, mid + 1, hi); // precondition: a[mid+1..hi] sorted
@@ -15,7 +15,7 @@ public class MergeSort {
         int i = lo, j = mid + 1;
         for (int k = lo; k <= hi; k++) {
             if (i > mid)
-                a[k] = aux[j++];               // 4,5,6,7   0,1,2,3
+                a[k] = aux[j++]; // 4,5,6,7 0,1,2,3
             else if (j > hi)
                 a[k] = aux[i++];
             else if (less(aux[j], aux[i]))
@@ -33,7 +33,7 @@ public class MergeSort {
         sort(a, aux, lo, mid);
         sort(a, aux, mid + 1, hi);
         if (!less(a[mid + 1], a[mid])) // for performance
-            return; 
+            return;
         merge(a, aux, lo, mid, hi);
     }
 
@@ -54,8 +54,9 @@ public class MergeSort {
         }
         return true;
     }
+
     public static void main(String[] args) {
-        Comparable[] arr = {32,10,43,12,3,9,90,1,0};
+        Comparable[] arr = { 32, 10, 43, 12, 3, 9, 90, 1, 0 };
         MergeSort ms = new MergeSort();
         ms.sort(arr);
         StdOut.println(Arrays.toString(arr));
