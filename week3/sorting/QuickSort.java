@@ -7,11 +7,11 @@ import edu.princeton.cs.algs4.StdRandom;
 
 public class QuickSort {
     // o ~ N Log(n)
-    //sensible to duplicates and implementation details and edge cases 
+    // sensible to duplicates, implementation details and edge cases 
     // that can make it N²
     // inplace,  not stable
     // for smaller arrays (teacher says N < 10~20) insertion sort can be faster
-    private static int CUTOFF = 15;
+    // private static int CUTOFF = 15;
 
     private static int partition(Comparable[] a, int lo, int hi) {
         int i = lo, j = hi + 1;
@@ -31,7 +31,7 @@ public class QuickSort {
             exch(a, i, j);
         }
         exch(a, lo, j);
-        return i;
+        return j;
     }
 
     static void exch(Comparable[] arr, int i, int j) {
@@ -41,7 +41,8 @@ public class QuickSort {
     }
 
     public static Comparable select(Comparable[] a, int k) {
-        /*finds the element at K position at ~ o(N) */
+        /* Quick select
+        finds the element at K position at ~ o(N) */
         StdRandom.shuffle(a);
         int lo = 0, hi = a.length - 1;
         while (hi > lo) {

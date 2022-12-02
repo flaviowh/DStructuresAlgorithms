@@ -22,10 +22,25 @@ public class Training {
     return -1;
   }
 
+  public static String tString(int[]arr, int cols){
+    String str = cols + " \n";
+    int index = 0;
+    for(int i = 0; i < cols; i++){
+        for(int j = 0; j < cols ; j++){
+            str = str + arr[index++] + " ";
+        }
+        str = str + "\n";
+    }
+    return str;
+}
+
   public static void main(String[] args) {
     // return opened[row * N + (col % N)] == 1;
-    int[] arr = {2,3,4,5,1,23,2};
+    int[] arr = {0, 1,2,3,4,5,6,7,8,9};
+    int n = 3;
+  
 
-    StdOut.println(Arrays.toString(Arrays.copyOfRange(arr, 0, 3)));
+
+    StdOut.println(tString(arr, n));
   }
 }
