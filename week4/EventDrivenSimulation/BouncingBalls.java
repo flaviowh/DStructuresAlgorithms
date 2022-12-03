@@ -1,5 +1,3 @@
-package week4.EventDrivenSimulation;
-
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdRandom;
 

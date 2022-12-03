@@ -1,7 +1,7 @@
 package week4.assignment;
 
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Stack;
 
 public class Board {
     private int[] arr;
@@ -107,7 +107,7 @@ public class Board {
     // all neighboring boards
     public Iterable<Board> neighbors(){
         int[][] dirs = {{1,0}, {-1,0}, {0, 1}, {0, -1}};
-        Queue<Board> close = new Queue<>();
+        Stack<Board> neighborsStack = new Stack<>();
         int zeroIndex = 0;
         for(int i = 0; i < arr.length;i++){
             if(arr[i]== 0){
@@ -142,31 +142,59 @@ public class Board {
             }
 
             Board similarBoard = new Board(similar);
-            close.enqueue(similarBoard);
+            neighborsStack.push(similarBoard);
 
         }
-        return close;
+        return neighborsStack;
 
     }
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin(){
-        return this;
+        int first = 0;
+        int second = 0;
+        int[][] twin = new int[dimension][dimension];
+        int k = 0;
+        while(first == 0 && second == 0){
+            if (arr[k] != 0 && arr[k+1] != 0) {
+                first = k;
+                second = k + 1;
+            }
+            k++;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (i == first) {
+                twin[i / dimension][i % dimension] = arr[second];
+            } else if (i == second) {
+                twin[i / dimension][i % dimension] = arr[first];
+            } else {
+                twin[i / dimension][i % dimension] = arr[i];
+            }
+        }
+        return new Board(twin);
+
     }
+            
+
+        
+
+    
 
     // unit testing (not graded)
     public static void main(String[] args){
-        int[][] tiles = {{1,0,3},{4,2,5},{7,8,6}};
-        Board b = new Board(tiles);
-        Board b2 = new Board(tiles);
-        StdOut.println(b.equals(b2));
-        int[][] dtiles = {{8,1,3},{4,0,2},{7,6,5}};
-        Board b3 = new Board(dtiles);
-        StdOut.println(b3.hamming());
-        Iterable<Board> boards = b.neighbors();
-        for(Board board: boards){
-            StdOut.println(board);
-        }
+        // int[][] tiles = {{1,0,3},{4,2,5},{7,8,6}};
+        // Board b = new Board(tiles);
+        // Board b2 = new Board(tiles);
+        // StdOut.println(b.equals(b2));
+        // int[][] dtiles = {{8,1,3},{4,0,2},{7,6,5}};
+        // Board b3 = new Board(dtiles);
+        // StdOut.println(b3.hamming());
+        // Iterable<Board> boards = b.neighbors();
+        // for(Board board: boards){
+        //     StdOut.println(board);
+        // }
+        // Board b4 = b.twin();
+        // StdOut.println(b4);
         
     }
 
