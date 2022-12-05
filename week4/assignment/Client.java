@@ -8,26 +8,28 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class Client {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner =  new Scanner(new File("C:\\Users\\flavi\\Desktop\\Py files\\dataStructuresAlgorithms\\week4\\assignment\\puzzles\\puzzle03.txt"));
+        Scanner scanner =  new Scanner(new File(".\\week4\\assignment\\puzzles\\puzzle03.txt"));
         // read the N points from a file
        // In in = new In(args[0]);
-        int N = scanner.nextInt();
+        int N = 2;    //scanner.nextInt();
+
+        int[][] unsolvable = {{1,3},{2,0}};
 
         int[][] blocks = new int[N][N];
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++)
-                blocks[i][j] = scanner.nextInt();
+                blocks[i][j] = unsolvable[i][j];     //scanner.nextInt();
         Board initial = new Board(blocks);
 
         // solve the puzzle
         Solver solver = new Solver(initial);
-        System.out.println(initial +" INIT");
-        System.out.println(solver.isSolvable());
+        System.out.println(initial +"\nlooking for solutions ...\n");
+        boolean possible = solver.isSolvable();
         // print solution to standard output
-        if (!solver.isSolvable())
+        if (!possible)
             StdOut.println("No solution possible");
         else {
-            StdOut.println("Minimum number of moves = " + solver.moves());
+            StdOut.println("Minimum number of moves = " + solver.moves() + "\n" + "steps : ");
             for (Board board : solver.solution())
                 StdOut.println(board);
         }

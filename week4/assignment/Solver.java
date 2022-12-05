@@ -1,7 +1,9 @@
 package week4.assignment;
+//logic from https://github.com/AlexJoz/ 
 
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Solver {
     private BNode node;
@@ -15,7 +17,7 @@ public class Solver {
         twinNode = new BNode(initial.twin(), 0);
 
         bQueue.insert(node);
-        bQueue.insert(twinNode);
+        bQueue.insert(twinNode); // prevents looping forever?
         bQueue.delMin();
 
         while (!node.isGoal()) {
@@ -42,9 +44,11 @@ public class Solver {
                 }
             }
 
+
             node = bQueue.delMin();
 
         }
+
     }
 
     // // is the initial board solvable? (see below)
@@ -63,6 +67,7 @@ public class Solver {
         if (isSolvable()) {
             return node.moves;
         }
+
         return -1;
     }
 
@@ -111,13 +116,13 @@ public class Solver {
             return iBoard.isGoal();
         }
 
-        public int cost() {
+        public int distance() {
             return moves + iBoard.manhattan();
         }
 
         @Override
         public int compareTo(BNode that) {
-            return this.cost() - that.cost();
+            return this.distance() - that.distance();
         }
 
         @Override
