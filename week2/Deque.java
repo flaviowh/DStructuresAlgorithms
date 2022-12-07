@@ -140,14 +140,20 @@ public class Deque<T> implements Iterable<T> {
 
   public static void main(String[] args) {
       Deque<Integer> dq = new Deque<Integer>(10);
-      for (int i = 0; i < 15; i++) {
-          dq.pushFront(i);
-      }
+    //   for (int i = 0; i < 15; i++) {
+    //       dq.pushFront(i);
+    //   }
+    dq.pushFront(2);
+    dq.pushFront(1);
+    dq.pushBack(3);
+    dq.pushBack(4);
       StdOut.println(Arrays.toString(dq.peekAll()));
+      StdOut.println("start is index " + dq.start  + " and end is index " + dq.end);
+      StdOut.println(dq.peekFront());
 
-      for (int i = 0; i < 14 + 1; i++) {
-          StdOut.println(dq.popBack());
-      }
+    //   for (int i = 0; i < 14 + 1; i++) {
+    //       StdOut.println(dq.popBack());
+    //   }
   }
 
 
