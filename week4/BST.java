@@ -1,5 +1,8 @@
 package week4;
 
+import edu.princeton.cs.algs4.ST;
+import edu.princeton.cs.algs4.StdOut;
+
 public class BST<Key extends Comparable<Key>, Value> {
     private Node root;
 
@@ -148,5 +151,26 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     // public Iterable<Key> iterator() {
     // /* see next slides */ }
+    
+    public void inorderTraversal(Node root) {
+        if (root == null)
+            return;
 
+        inorderTraversal(root.left);
+        StdOut.println(root.key);
+        inorderTraversal(root.right);
+    }
+
+    public static void main(String[] args) {
+        BST<String, Integer> tree = new BST<>();
+        String[] pokemons = {"Pikachu", "squirtle", "Venomoth",
+    "bulbasaur", "caterpee", "gengar", "hypnos", "alceus",
+"charizard", "starfish"};
+        for(int i =0; i< 10; i++){
+            tree.put(String.valueOf(i), i);
+        }
+        StdOut.println("size " + tree.size());
+        tree.inorderTraversal(tree.root);
+    }
+    
 }
