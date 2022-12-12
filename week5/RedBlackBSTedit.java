@@ -6,6 +6,7 @@ public class RedBlackBSTedit<Key extends Comparable<Key>, Value> {
     private Node root;
     private static final boolean RED = true;
     private static final boolean BLACK = false;
+    
 
     private class Node {
         private Key key;

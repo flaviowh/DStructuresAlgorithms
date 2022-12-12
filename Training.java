@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
@@ -37,10 +38,13 @@ public class Training {
   public static void main(String[] args) {
     // return opened[row * N + (col % N)] == 1;
     int[] arr = {0, 1,2,3,4,5,6,7,8,9};
-    int n = 3;
-  
+    TreeSet<Integer> tree = new TreeSet<Integer>();
+    for(int n : arr){
+      tree.add(StdRandom.uniformInt(0, 50));
+    }
 
-
-    StdOut.println(tString(arr, n));
+    for(int i: tree){
+      StdOut.println(i);
+    }
   }
 }

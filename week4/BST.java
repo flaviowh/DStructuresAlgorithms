@@ -151,7 +151,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     // public Iterable<Key> iterator() {
     // /* see next slides */ }
-    
+
     public void inorderTraversal(Node root) {
         if (root == null)
             return;
@@ -162,12 +162,10 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     public static void main(String[] args) {
-        BST<String, Integer> tree = new BST<>();
-        String[] pokemons = {"Pikachu", "squirtle", "Venomoth",
-    "bulbasaur", "caterpee", "gengar", "hypnos", "alceus",
-"charizard", "starfish"};
-        for(int i =0; i< 10; i++){
-            tree.put(String.valueOf(i), i);
+        BST<Integer, String> tree = new BST<>();
+        int[] nums = {5,2,10,12,8,9,6};
+        for(int i =0; i< 7; i++){
+            tree.put(nums[i], "dodo");
         }
         StdOut.println("size " + tree.size());
         tree.inorderTraversal(tree.root);
