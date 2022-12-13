@@ -65,9 +65,12 @@ public class KdTree {
         }
 
         int cmp = x.compareTo(p);
+        
         if (cmp < 0) {
             x.setLeft(put(x.getLeft(), p, !isXoriented));
-        } else {
+        } 
+        
+        else {
             x.setRight(put(x.getRight(), p, !isXoriented));
         }
 
