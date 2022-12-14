@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.StdOut;
 
-/// A GPT3 inplementation
+/// A CHATgpt inplementation
 
 public class Deque<T> implements Iterable<T> {
     private T[] array;

@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.StdDraw;
 
-// TOO hard for me, had to copy https://github.com/AlexJoz/ 
+// TOO hard for me, copied from https://github.com/AlexJoz/ 
 
 public class KdTree {
     private static final RectHV TILE = new RectHV(0, 0, 1, 1);
