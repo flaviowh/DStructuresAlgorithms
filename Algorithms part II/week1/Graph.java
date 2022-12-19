@@ -3,7 +3,9 @@ package week1;
 import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.GraphGenerator;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Graph {
     private final int V;
@@ -120,4 +122,27 @@ public class Graph {
         return count / 2;
 
     }
+
+    public static void main(String[] args) {
+        Graph g = new Graph(12);
+        g.addEdge(1, 2);
+        g.addEdge(1, 5);
+        g.addEdge(1, 9);
+        g.addEdge(2, 3);
+        g.addEdge(3, 4);
+        g.addEdge(5, 6);
+        g.addEdge(5, 8);
+        g.addEdge(6,7);
+        g.addEdge(9, 10);
+
+
+        DepthFirstPathsBU dfs = new DepthFirstPathsBU(g, 1);
+        // Iterable<Integer> ans = g.adj(1);
+        // for(int i: ans){
+        //     StdOut.println(i);
+        // }
+        StdOut.println(dfs.pathTo(8));
+    }
+
+    
 }

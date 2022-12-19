@@ -2,7 +2,8 @@
     "git.ignoreLimitWarning": true,
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "algs4.jar"
+        "algs4.jar",
+        "jfreechart-1.0.19.jar"
     ],
     "java.project.sourcePaths": [
         "Algorithms Part I",

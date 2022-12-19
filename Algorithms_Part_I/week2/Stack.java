@@ -26,6 +26,18 @@ public class Stack<Item> implements Iterable<Item> {
         return item;
     }
 
+    @Override
+    public String toString() {
+        if(first == null) return "[ ]";
+
+        StringBuilder str = new StringBuilder();
+        Node cur = first;
+        while(cur != null){
+            str.append(cur.item + " ");
+            cur = cur.next;
+        }
+        return str.toString();
+    }
     public Iterator<Item> iterator() {
         return new ListIterator();
     }

@@ -1,32 +1,32 @@
 package week1;
 
-import Algorithms_Part_I.week2.Stack;
-import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Stack;
+import edu.princeton.cs.algs4.StdOut;
 
-public class BreadthFirstPaths {
+public class DepthFirstPathsBU {
     private boolean[] marked;
     private int[] edgeTo;
-    private final int s; // source vertex ~chatGPT
+    private int s; // vertex source
 
-    public BreadthFirstPaths(Graph G, int s) {
+    public DepthFirstPathsBU(Graph g, int s) { 
         this.s = s;
-        marked = new boolean[G.V()];
-        edgeTo = new int[G.V()];
-        bfs(G, s);
+        marked = new boolean[g.V()];
+        edgeTo = new int[g.V()];
+        dfs(g, s);
     }
 
-    private void bfs(Graph G, int s) {
-        Queue<Integer> q = new Queue<Integer>();
-        q.enqueue(s);
-        marked[s] = true;
+    private void dfs(Graph G, int v) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(v);
+        marked[v] = true;
 
-        while (!q.isEmpty()) {
-            int current = q.dequeue();
+        while (!stack.isEmpty()) {
+            int current = stack.pop();
             for (int w : G.adj(current)) {
                 if (!marked[w]) {
                     marked[w] = true;
                     edgeTo[w] = current;
-                    q.enqueue(w);
+                    stack.push(w);
                 }
             }
         }
