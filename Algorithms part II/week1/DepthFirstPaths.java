@@ -1,19 +1,18 @@
 package week1;
 
-
 import edu.princeton.cs.algs4.Stack;
 
-public class DepthFirstPaths {
+public class DepthFirstPaths implements Paths {
     private boolean[] marked;
     private int[] edgeTo;
     private int s; // source vertex
 
-    public DepthFirstPaths(Graph g, int s) { //or use algs4's Graph class
+    public DepthFirstPaths(Graph g, int s) { // or use algs4's Graph class
         this.s = s;
         marked = new boolean[g.V()];
         edgeTo = new int[g.V()];
         dfs(g, s);
-        
+
     }
 
     private void dfs(Graph G, int v) {

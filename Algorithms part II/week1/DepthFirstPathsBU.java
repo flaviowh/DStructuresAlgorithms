@@ -1,14 +1,13 @@
 package week1;
 
 import edu.princeton.cs.algs4.Stack;
-import edu.princeton.cs.algs4.StdOut;
 
-public class DepthFirstPathsBU {
+public class DepthFirstPathsBU implements Paths {
     private boolean[] marked;
     private int[] edgeTo;
     private int s; // vertex source
 
-    public DepthFirstPathsBU(Graph g, int s) { 
+    public DepthFirstPathsBU(Graph g, int s) {
         this.s = s;
         marked = new boolean[g.V()];
         edgeTo = new int[g.V()];

@@ -3,7 +3,7 @@ package week1;
 import Algorithms_Part_I.week2.Stack;
 import edu.princeton.cs.algs4.Queue;
 
-public class BreadthFirstPaths {
+public class BreadthFirstPaths implements Paths {
     private boolean[] marked;
     private int[] edgeTo;
     private final int s; // source vertex ~chatGPT
