@@ -15,13 +15,12 @@ public class Digraph implements Graph {
             adj[v] = new Bag<Integer>();
     }
 
-    
     public void addEdge(int v, int w) {
         adj[v].add(w);
         E++;
 
     }
-    
+
     // number of vertices
     public int V() {
         return V;
@@ -64,5 +63,60 @@ public class Digraph implements Graph {
         StdOut.println(dfs.pathTo(10));
     }
 
+    public Digraph reverse() {
+        Digraph reverse = new Digraph(V);
+        for (int v = 0; v < V; v++) {
+            for (int w : adj(v)) {
+                reverse.addEdge(w, v);
+            }
+        }
+        return reverse;
+    }
+
+    boolean hasSelfLoops() {
+        for (int v = 0; v < V; v++) {
+            for (int w : adj(v)) {
+                if (v == w) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //ChatGPT inplementation
+    boolean isCyclic() {
+        boolean[] visited = new boolean[V];
+        boolean[] recursionStack = new boolean[V];
+
+        for (int v = 0; v < V; v++) {
+            if (isCyclicUtil(v, visited, recursionStack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isCyclicUtil(int v, boolean[] visited, boolean[] recursionStack) {
+        if (!visited[v]) {
+            visited[v] = true;
+            recursionStack[v] = true;
+
+            for (int w : adj(v)) {
+                if (!visited[w] && isCyclicUtil(w, visited, recursionStack)) {
+                    return true;
+                } else if (recursionStack[w]) {
+                    return true;
+                }
+            }
+        }
+        recursionStack[v] = false;
+        return false;
+    }
+
+    public Object hamiltonianPath() {
+        return null;
+    }
 
 }
