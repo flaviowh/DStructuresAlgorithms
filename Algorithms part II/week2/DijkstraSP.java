@@ -4,6 +4,8 @@ import Algorithms_Part_I.week2.Stack;
 import edu.princeton.cs.algs4.IndexMinPQ;
 import edu.princeton.cs.algs4.StdOut;
 
+
+
 public class DijkstraSP {
     private DirectedEdge[] edgeTo;
     private double[] distTo;
@@ -76,3 +78,5 @@ public class DijkstraSP {
         }
     }
 }
+
+// performance depends on MinPQ implementation
