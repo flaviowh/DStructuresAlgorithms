@@ -1,10 +1,10 @@
 package week2;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 
 public class EdgeWeightedGraph {
     private final int V;
@@ -30,17 +30,17 @@ public class EdgeWeightedGraph {
         return adj[v];
     }
 
-
+    // teachers' implementation - doesn't care for duplicate edges
     public Iterable<Edge> edges() {
-        Set<Edge> uniqueEdges = new HashSet<>();
+        Bag<Edge> allEdges = new Bag<>();
         for (Bag<Edge> b : adj) {
-            Iterator<Edge> bIter = b.iterator();
-            while (bIter.hasNext())
-            uniqueEdges.add((Edge) bIter.next());
+            for (Edge e : b) {
+                allEdges.add(e);
+            }
         }
-        return uniqueEdges;
+        return allEdges;
     }
-  
+
     public int V() {
         return V;
     }

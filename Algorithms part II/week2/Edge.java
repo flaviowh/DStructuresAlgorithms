@@ -55,4 +55,8 @@ public class Edge implements Comparable<Edge> {
         return Objects.hash(v, w, weight);
     }
 
+    public double weight() {
+        return this.weight;
+    }
+
 }

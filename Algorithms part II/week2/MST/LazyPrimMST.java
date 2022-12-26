@@ -1,32 +1,52 @@
-package week2;
+package week2.MST;
 
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.UF;
+import week2.Edge;
+import week2.EdgeWeightedGraph;
 
-public class KruskalMST {
-    private Queue<Edge> mst = new Queue<Edge>();
+public class LazyPrimMST {
+    private boolean[] marked; // connected vertices
+    private Queue<Edge> mst; // MST edges
+    private MinPQ<Edge> pq; // PQ of edges
 
-    public KruskalMST(EdgeWeightedGraph G) {
-        MinPQ<Edge> pq = new MinPQ<Edge>();
-        for (Edge e : G.edges())
-            pq.insert(e);
-        UF uf = new UF(G.V());
-
+    public LazyPrimMST(EdgeWeightedGraph G) {
+        pq = new MinPQ<Edge>();
+        mst = new Queue<Edge>();
+        marked = new boolean[G.V()];
+        visit(G, 0);
         while (!pq.isEmpty() && mst.size() < G.V() - 1) {
             Edge e = pq.delMin();
             int v = e.either(), w = e.other(v);
-            if (!uf.connected(v, w)) {
-                uf.union(v, w);
-                mst.enqueue(e);
-            }
+            if (marked[v] && marked[w])
+                continue;
+            mst.enqueue(e);
+            if (!marked[v])
+                visit(G, v);
+            if (!marked[w])
+                visit(G, w);
         }
+    }
+
+    private void visit(EdgeWeightedGraph G, int v) {
+        marked[v] = true;
+        for (Edge e : G.adj(v))
+            if (!marked[e.other(v)])
+                pq.insert(e);
     }
 
     public Iterable<Edge> edges() {
         return mst;
     }
+
+    public double weight(){
+        double totalWeight = 0;
+        for(Edge e: edges()){
+            totalWeight += e.weight();
+        }
+        return totalWeight;
+    } //  Exercise 4.3.31.
 
     public static void main(String[] args) {
         EdgeWeightedGraph eg = new EdgeWeightedGraph(8);
@@ -47,11 +67,14 @@ public class KruskalMST {
         eg.addEdge(new Edge(6, 0, 0.58));
         eg.addEdge(new Edge(6, 4, 0.93));
 
-        KruskalMST kmst = new KruskalMST(eg);
+        LazyPrimMST pmst = new LazyPrimMST(eg);
 
-        Iterable<Edge> mst = kmst.edges();
+        Iterable<Edge> mst = pmst.edges();
         for (Edge e : mst) {
             StdOut.println(e);
         }
+        StdOut.println(pmst.weight());
     }
+
+
 }
