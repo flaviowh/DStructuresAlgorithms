@@ -1,41 +1,25 @@
-package week2.assignment;
-
 import java.awt.Color;
 import java.util.Arrays;
 
-import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Picture;
 import edu.princeton.cs.algs4.StdOut;
 
 public class SeamCarver {
     private Picture currentPicture;
-    private Pixel[][] grid;
-    private int[][] dirs = new int[][] { { -1, -1 }, { 0, -1 }, { -1, 0 }, { 1, 0 }, { 1, -1 }, { -1, 1 }, { 0, 1 },
-            { 1, 1 } };
+    private MinPQ<Pixel> firstRow;
+    private MinPQ<Pixel> firstCol;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
         if (picture == null)
             throw new IllegalArgumentException("null picture error.");
 
-        grid = new Pixel[picture.width()][picture.height()];    
         currentPicture = picture;
-
-        fillGrid();
+        firstRow = new MinPQ<Pixel>();
+        firstCol = new MinPQ<Pixel>();
+        getInitialPixels();
     }
-
-
-
-    private void fillGrid() {
-        for(int y = 0; y < currentPicture.height() -1 ; y ++){
-            for(int x = 0; x < currentPicture.width() -1 ; x++){
-                grid[y][x] = new Pixel(x,y);
-            }
-        }
-    }
-
-
 
     // current picture
     public Picture picture() {
@@ -84,27 +68,62 @@ public class SeamCarver {
         return Math.sqrt(xVar + yVar);
     }
 
+    private void getInitialPixels() {
+        int height = currentPicture.height();
+        int width = currentPicture.width();
 
+        for (int c = 0; c < width - 1; c++) {
+            firstRow.insert(new Pixel(c, 1));
+        }
+        for (int r = 0; r < height - 1; r++) {
+            firstCol.insert(new Pixel(1, r));
+        }
+
+    }
 
     // // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
         int[] column = new int[currentPicture.height()];
+        int n = 0;
+        int xStart = firstRow.delMin().x;
+        column[n++] = xStart;
+
+        for (int i = 0; i < currentPicture.height() - 1; i++) {
+            MinPQ<Pixel> selection = new MinPQ<Pixel>();
+            selection.insert(new Pixel(xStart, i));
+            selection.insert(new Pixel(xStart - 1, i));
+            selection.insert(new Pixel(xStart + 1, i));
+            Pixel weakest = selection.delMin();
+            column[n++] = weakest.x;
+        }
         return column;
     }
 
     // // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
         int[] row = new int[currentPicture.width()];
+        int n = 0;
+        int yStart = firstCol.delMin().x;
+        row[n++] = yStart;
+
+        for (int i = 0; i < currentPicture.width() - 1; i++) {
+            MinPQ<Pixel> selection = new MinPQ<Pixel>();
+            selection.insert(new Pixel(i, yStart));
+            selection.insert(new Pixel(i, yStart - 1));
+            selection.insert(new Pixel(i, yStart + 1));
+            Pixel weakest = selection.delMin();
+            row[n++] = weakest.y;
+        }
         return row;
     }
 
-    private int[][] adj(int x, int y) {
-        int[][] adjacents = new int[8][2];
-        for (int i = 0; i < dirs.length; i++) {
-            adjacents[y] = new int[] { x + dirs[i][0], y + dirs[i][1] };
-        }
-        return adjacents;
-    }
+    // private int[][] adj(int x, int y) {
+    // int[][] adjacents = new int[4][2];
+    // for (int i = 0; i < dirs.length; i++) {
+    // adjacents[y] = new int[] { x + dirs[i][0], y + dirs[i][1] };
+    // }
+    // return adjacents;
+    // }
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
@@ -130,12 +149,12 @@ public class SeamCarver {
         public int x;
         public int y;
         public double energy;
-        // public Bag<Pixel> adj = new Bag<Pixel>();
 
         public Pixel(int x, int y) {
             this.x = x;
             this.y = y;
             this.energy = energy(x, y);
+
         }
 
         public int compareTo(Pixel that) {
@@ -157,22 +176,17 @@ public class SeamCarver {
 
     }
 
-
-
-
-    public static void main(String[] args) {
-
-        // String butterfly =
-        // "https://myalbumpage.s3.sa-east-1.amazonaws.com/blue_morpho.jpg";
-        String path = ".\\Algorithms part II\\week2\\assignment\\tests\\6x5.png";
-        Picture picture = new Picture(path);
-        //picture.show();
-        StdOut.println("width: " + picture.width() + " height: " + picture.height());
-        // MinPQ<Pixel> mpq = new MinPQ<Pixel>();
-        SeamCarver seamCarver = new SeamCarver(picture);
-        StdOut.println(seamCarver.grid[2][2]);
-        //StdOut.println(Arrays.toString(seamCarver.grid[1]));
-        // int[] seam = seamCarver.findVerticalSeam();
-        // StdOut.println(seam.length);
-    }
+    // public static void main(String[] args) {
+    // String me = "C:\\Users\\flavi\\Desktop\\Box\\me_small.png";
+    // String butterfly =
+    // "https://myalbumpage.s3.sa-east-1.amazonaws.com/blue_morpho.jpg";
+    // Picture picture = new Picture(me);
+    // picture.show();
+    // StdOut.println("width: " + picture.width() + " height: " + picture.height());
+    // // MinPQ<Pixel> mpq = new MinPQ<Pixel>();
+    // SeamCarver seamCarver = new SeamCarver(picture);
+    // int[] seam = seamCarver.findVerticalSeam();
+    // StdOut.println(Arrays.toString(seam));
+    // StdOut.println(seam.length);
+    // }
 }

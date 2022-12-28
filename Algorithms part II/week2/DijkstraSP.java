@@ -39,7 +39,7 @@ public class DijkstraSP {
             distTo[w] = distTo[v] + e.weight();
             edgeTo[w] = e;
             if (pq.contains(w))
-                pq.decreaseKey(w, distTo[w]);
+                pq.changeKey(w, distTo[w]);
             else
                 pq.insert(w, distTo[w]);
         }

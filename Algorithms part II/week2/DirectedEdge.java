@@ -1,6 +1,6 @@
 package week2;
 
-public class DirectedEdge {
+public class DirectedEdge implements Comparable<DirectedEdge> {
     private final int v, w;
     private final double weight;
 
