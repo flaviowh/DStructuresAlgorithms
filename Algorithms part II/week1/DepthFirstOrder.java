@@ -28,4 +28,24 @@ public class DepthFirstOrder {
     public Iterable<Integer> reversePost() {
         return reversePost;
     }
+
+    private void dfs2(Digraph G, int v) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(v);
+        marked[v] = true;
+    
+        while (!stack.isEmpty()) {
+            int current = stack.pop();
+            reversePost.push(current);
+    
+            for (int w : G.adj(current)) {
+                if (!marked[w]) {
+                    stack.push(w);
+                    marked[w] = true;
+                }
+            }
+        }
+    }
+    
+    
 }
