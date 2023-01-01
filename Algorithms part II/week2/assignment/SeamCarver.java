@@ -5,15 +5,14 @@ import java.util.Arrays;
 
 import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.Picture;
-import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Stopwatch;
+
+// followed https://github.com/alexilyenko/
 
 public class SeamCarver {
     private Picture currentPicture;
-    // [cols][rows] of pixel energies
-    private Double[][] grid; 
-    private int[][] dirs = new int[][] { { -1, -1 }, { 0, -1 }, { -1, 0 }, { 1, 0 }, { 1, -1 }, { -1, 1 }, { 0, 1 },
-            { 1, 1 } };
+    private boolean isTransposed = false;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
@@ -22,32 +21,38 @@ public class SeamCarver {
 
         currentPicture = picture;
 
-        grid = fillGrid(currentPicture);
     }
 
-    private Double[][] fillGrid(Picture pic) {
-        Double[][] newGrid = new Double[pic.height()][pic.width()];
-        for (int y = 0; y < pic.height(); y++) {
-            for (int x = 0; x < pic.width(); x++) {
-                newGrid[y][x] = energy(x, y);
+    private Picture transposePicture(Picture pic) {
+        Picture transposed = new Picture(pic.height(), pic.width());
+        // col = width row = height
+        for (int col = 0; col < transposed.width(); col++) {
+            for (int row = 0; row < transposed.height(); row++) {
+                transposed.set(col, row, pic.get(row, col));
             }
         }
-        return newGrid;
+
+        currentPicture = transposed;
+        isTransposed = !isTransposed;
+        return transposed;
     }
 
-    // current picture
+    // curr picture
     public Picture picture() {
+        if (isTransposed) {
+            return transposePicture(currentPicture);
+        }
         return currentPicture;
     }
 
-    // width of current picture
+    // width of curr picture
     public int width() {
-        return currentPicture.width();
+        return isTransposed ? currentPicture.height() : currentPicture.width();
     }
 
-    // height of current picture
+    // height of curr picture
     public int height() {
-        return currentPicture.height();
+        return isTransposed ? currentPicture.width() : currentPicture.height();
     }
 
     private boolean isValidPixel(int x, int y) {
@@ -84,170 +89,179 @@ public class SeamCarver {
 
     // // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        int[] seam = new int[1];
-    
+        if (isTransposed) {
+            return findVseam(transposePicture(currentPicture));
+        }
+        return findVseam(currentPicture);
+    }
+
+    private int[] findVseam(Picture picture) {
+
+        int[] seam = new int[currentPicture.height()];
+
+        if (currentPicture.width() == 1) {
+            Arrays.fill(seam, 0);
+            return seam;
+        }
+
+        int i = currentPicture.height() - 2;
+
+        DirectedEdge[][] matrix = makeMatrix(picture);
+        DirectedEdge curr = lightestOf(matrix[picture.height() - 2]);
+
+        while (curr != null) {
+            seam[i--] = curr.to();
+            int prev = curr.from();
+            curr = matrix[i][prev];
+        }
+
+        seam[0] = seam[1];
+        seam[seam.length - 1] = seam[seam.length - 2];
+
         return seam;
     }
 
+    private double weightOf(DirectedEdge[][] matrix, int x, int y) {
+        return matrix[x][y] != null ? matrix[x][y].weight() : Double.POSITIVE_INFINITY;
 
-    //make adjacency matrix
-    private DirectedEdge[][] matrix(){
-        DirectedEdge[][] matrix = new DirectedEdge[currentPicture.height()][currentPicture.width()];
+    }
+
+    private DirectedEdge lightestOf(DirectedEdge[] edges) {
+        DirectedEdge lighter = new DirectedEdge(0, 0, Double.POSITIVE_INFINITY);
+        for (DirectedEdge e : edges) {
+            if (e != null && e.weight() < lighter.weight()) {
+                lighter = e;
+            }
+        }
+        return lighter;
+    }
+
+    // make adjacency matrix
+    private DirectedEdge[][] makeMatrix(Picture picture) {
+        DirectedEdge[][] matrix = new DirectedEdge[picture.height()][picture.width()];
+        for (int i = 1; i < matrix.length - 1; i++) {
+            for (int j = 1; j < matrix[i].length - 1; j++) {
+                double curr = energy(j, i);
+                double prevLeft = weightOf(matrix, i - 1, j - 1);
+                double prev = weightOf(matrix, i - 1, j);
+                double prevRight = weightOf(matrix, i - 1, j + 1);
+
+                int from;
+                double weight;
+                if (notBiggerThan(prev, prevLeft, prevRight)) {
+                    from = j;
+                    weight = prev + curr;
+                } else if (notBiggerThan(prevLeft, prevRight, prev)) {
+                    from = j - 1;
+                    weight = prevLeft + curr;
+                } else if (notBiggerThan(prevRight, prevLeft, prev)) {
+                    from = j + 1;
+                    weight = prevRight + curr;
+                } else {
+                    from = j;
+                    weight = curr;
+                }
+                matrix[i][j] = new DirectedEdge(from, j, weight);
+            }
+        }
+
         return matrix;
+    }
+
+    private boolean notBiggerThan(double a, double b, double c) {
+        return a != Double.POSITIVE_INFINITY && a <= b && a <= c;
+    }
+
+    private boolean isValidSeam(int[] seam, int size, int limit) {
+        if (seam == null || seam.length != size)
+            return false;
+
+        int curr = seam[0];
+        for (int x : seam) {
+            if (Math.abs(x - curr) > 1 || x < 0 || x > limit)
+                return false;
+            curr = x;
+        }
+        return true;
     }
 
     // // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
-        int[] row = new int[currentPicture.width()];
-        return row;
-    }
+        if (isTransposed) {
+            return findVseam(currentPicture);
+        } else {
 
-    private int[][] adj(int x, int y) {
-        int[][] adjacents = new int[8][2];
-        for (int i = 0; i < dirs.length; i++) {
-            adjacents[y] = new int[] { x + dirs[i][0], y + dirs[i][1] };
+            return findVseam(transposePicture(currentPicture));
         }
-        return adjacents;
+
     }
 
-    // remove horizontal seam from current picture
+    // remove horizontal seam from curr picture
     public void removeHorizontalSeam(int[] seam) {
-        if (currentPicture.width() <= 1 || seam == null || seam.length != currentPicture.width() - 1)
-            throw new IllegalArgumentException("invalid seam");
-
-        int[] yCoordinates = findHorizontalSeam();
-
+        if (isTransposed) {
+            removeVSeam(seam, currentPicture);
+        } else {
+            removeVSeam(seam, transposePicture(currentPicture));
+        }
     }
 
-    // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
-        if (currentPicture.height() <= 1 || seam == null || seam.length != currentPicture.height() - 1)
+        if (!isValidSeam(seam, currentPicture.height(), currentPicture.width() - 1))
             throw new IllegalArgumentException("invalid seam");
 
-    }
-
-    private int[] to2D(int z) {
-        int N = grid[0].length;
-        int y = z / N;
-        int x = z % N;
-        return new int[] { x, y };
-    }
-
-    private int to1D(int x, int y) {
-        int N = grid[0].length;
-        return y * N + (x % N);
-    }
-
-    private class AcyclicPath {
-        private int size;
-        private int[] pixelTo;
-        private double[] distTo;
-        private boolean[] markedTopological;
-        private Stack<Integer> topologicalOrder = new Stack<>();
-        public Stack<Integer> path = new Stack<>();
-
-        public AcyclicPath(Double[][] grid, int start, int end) {
-            size = grid[0].length * grid.length;
-            markedTopological = new boolean[size];
-            pixelTo = new int[size];
-            distTo = new double[size];
-
-            for (int p = 0; p < size; p++) {
-                distTo[p] = Double.POSITIVE_INFINITY;
-                pixelTo[p] = Integer.MAX_VALUE;
-            }
-            
-
-            distTo[start] = 0.0;
-            orderTopologically(start);
-            for (int v : topologicalOrder) {
-                relax(grid, v);
-            }
-
-            for (int x = pixelTo[end]; x != Integer.MAX_VALUE ; x = pixelTo[x]) {
-                path.push(x);
-            }
-
-            StdOut.println(Arrays.toString(pixelTo));
+        if (isTransposed) {
+            removeVSeam(seam, transposePicture(currentPicture));
+        } else {
+            removeVSeam(seam, currentPicture);
         }
+    }
 
+    // remove vertical seam from curr picture
+    private void removeVSeam(int[] seam, Picture picture) {
 
+        Picture cropped = new Picture(picture.width() - 1, picture.height());
 
-
-        private void relax(Double[][] grid, int v) {
-            for (int a : adjacents(v)) {
-                if (isValid(a)) {
-                    int[] xy = to2D(a);
-                    double energyA = grid[xy[1]][xy[0]];
-                    if (distTo[a] > distTo[v] + energyA) {
-                        distTo[a] = distTo[v] + energyA;
-                        pixelTo[a] = v;
-                    }
+        for (int c = 0; c < picture.height(); c++) {
+            int stride = seam[c];
+            for (int r = 0; r < picture.width() - 1; r++) {
+                if (r >= stride) {
+                    cropped.set(r, c, picture.get(r + 1, c));
+                } else {
+                    cropped.set(r, c, picture.get(r, c));
                 }
             }
         }
-
-        private void orderTopologically(int v) {
-            Stack<Integer> stack = new Stack<>();
-            stack.push(v);
-            markedTopological[v] = true;
-
-            while (!stack.isEmpty()) {
-                int current = stack.pop();
-                topologicalOrder.push(current);
-
-                for (int w : adjacents(current)) {
-                    if (isValid(w) && !markedTopological[w]) {
-                        stack.push(w);
-                        markedTopological[w] = true;
-                    }
-                }
-            }
-
-        }
-
-        private boolean isValid(int a) {
-            int[] xy = to2D(a);
-            return isValidPixel(xy[0], xy[1]);
-        }
-
-        private int[] adjacents(int w) {
-            int[] xy = to2D(w);
-            int n = 0;
-            int[] adjc = new int[dirs.length];
-            for (int[] a : adj(xy[0], xy[1])) {
-                adjc[n++] = to1D(a[0], a[1]);
-            }
-            return adjc;
-        }
-
+        currentPicture = cropped;
     }
-  
-    
+
     public static void main(String[] args) {
 
-        String butterfly = "https://myalbumpage.s3.sa-east-1.amazonaws.com/blue_morpho.jpg";
-        String path = ".\\Algorithms part II\\week2\\assignment\\tests\\6x5.png";
-        String path2 = ".\\Algorithms part II\\week2\\assignment\\tests\\12x10.png";
-        Picture picture = new Picture(path);
-        // picture.show();
-        StdOut.println("width: " + picture.width() + " height: " + picture.height());
-        // MinPQ<Pixel> mpq = new MinPQ<Pixel>();
-        SeamCarver seamCarver = new SeamCarver(picture);
-        for (int i = 0; i < picture.height(); i++) {
-            StdOut.println(Arrays.toString(seamCarver.grid[i]));
+        String path = ".\\Algorithms part II\\week2\\assignment\\tests\\Hjocean.png";
+        Picture inputImg = new Picture(path);
+        int removeColumns = 150;
+        int removeRows = 150;
+
+        StdOut.printf("image is %d columns by %d rows\n", inputImg.width(), inputImg.height());
+        SeamCarver sc = new SeamCarver(inputImg);
+
+        Stopwatch sw = new Stopwatch();
+
+        for (int i = 0; i < removeRows; i++) {
+            int[] horizontalSeam = sc.findHorizontalSeam();
+            sc.removeHorizontalSeam(horizontalSeam);
         }
-        StdOut.println("w: " + seamCarver.grid[0].length + " h: " + seamCarver.grid.length);
-        int r = 2;
-        int c = 1;
-        int oneD = seamCarver.to1D(r, c);
-        int[] twoD = seamCarver.to2D(oneD);
-        StdOut.println(twoD[0] == r && twoD[1] == c);
-        StdOut.println(seamCarver.grid[2][1]);
-        StdOut.println(seamCarver.to1D(c, oneD));
-        int[] seam = seamCarver.findVerticalSeam();
-        for (int x : seam) {
-            StdOut.println(Arrays.toString(seamCarver.to2D(x)));
+
+        for (int i = 0; i < removeColumns; i++) {
+            int[] verticalSeam = sc.findVerticalSeam();
+            sc.removeVerticalSeam(verticalSeam);
         }
+        Picture outputImg = sc.picture();
+
+        StdOut.printf("new image size is %d columns by %d rows\n", sc.width(), sc.height());
+
+        StdOut.println("Resizing time: " + sw.elapsedTime() + " seconds.");
+        inputImg.show();
+        outputImg.show();
+
     }
 }
