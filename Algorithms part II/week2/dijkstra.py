@@ -18,13 +18,13 @@ class DirectedEdge:
     def weight_(self) -> float:
         return self.weight
 
-    def __lt__(self, other):
+    def __lt__(self, other): # less than
         return self.weight < other.weight
 
-    def __gt__(self, other):
+    def __gt__(self, other): # greater then
         return self.weight > other.weight
 
-    def __eq__(self, other):
+    def __eq__(self, other):  # equal to
         return self.weight == other.weight
 
     def __repr__(self):
