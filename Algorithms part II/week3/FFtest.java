@@ -83,7 +83,7 @@ public class FFtest {
         network3.addEdge(new FlowEdge(9, 5, 10));
 
         FordFulkerson ff3 = new FordFulkerson(network3, 0, 9);
-        StdOut.println("widest path : " + ff3.widestPath());
+        StdOut.println("widest path : " + Arrays.toString(ff3.widestPath()));
 
         // widest path algorithm (from figure)
 
@@ -111,8 +111,6 @@ public class FFtest {
             network4.addEdge(new FlowEdge(conn[0], conn[1], conn[2]));
         }
         FordFulkerson ff5 = new FordFulkerson(network4, 0, 7);
-        for (int i : ff5.widestPath()) {
-            StdOut.println(i);
-        }
+       StdOut.println("widest path 2 : " + Arrays.toString(ff5.widestPath()));
     }
 }

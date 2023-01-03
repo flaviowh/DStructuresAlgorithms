@@ -59,8 +59,13 @@ public class FordFulkerson {
         return value;
     }
 
-    public Iterable<Integer> widestPath(){ // returning fattest path
-        return fattestPath;
+    public int[] widestPath(){ // returning fattest path
+        int i = 0;
+        int[] path = new int[fattestPath.size()];
+        while(!fattestPath.isEmpty()){
+            path[i++] = fattestPath.pop();
+        }
+        return path;
     }
 
     public boolean minCut(int v) {
