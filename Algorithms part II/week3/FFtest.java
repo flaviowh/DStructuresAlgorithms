@@ -22,6 +22,7 @@ public class FFtest {
         StdOut.println(ff.minCut(0));
         StdOut.println(ff.value());
 
+
         // Bipartite network problem
         double capacity = 1;
         Map<Integer, String> names = Map.of(1, "Alice", 2, "Bob", 3, "Carol", 4, "Dave", 5, "Eliza", 6, "Adobe", 7,
@@ -85,32 +86,19 @@ public class FFtest {
         FordFulkerson ff3 = new FordFulkerson(network3, 0, 9);
         StdOut.println("widest path : " + Arrays.toString(ff3.widestPath()));
 
-        // widest path algorithm (from figure)
-
-        FlowNetwork stationsNetwork = new FlowNetwork(7);
-        String[] stations = new String[] { "Maldon", "Feering", "Tiptree", "Clacton", "Blaxhall", "Hardwich",
-                "Dunwich" };
-        int[][] connections = new int[][] { { 0, 1, 11 }, { 0, 2, 8 }, { 0, 3, 40 }, { 1, 2, 3 }, { 1, 5, 46 },
-                { 5, 2, 29 }, { 2, 4, 31 }, { 3, 5, 17 }, { 5, 4, 40 }, { 4, 6, 15 }, { 5, 6, 43 } };
-        for (int[] conn : connections) {
-            stationsNetwork.addEdge(new FlowEdge(conn[0], conn[1], conn[2]));
-        }
-
-        FordFulkerson ff4 = new FordFulkerson(stationsNetwork, 0, 6);
-        for (int i : ff4.widestPath()) {
-            StdOut.println(stations[i]);
-        }
-        // wrong
-
+        // widest path test 2
         FlowNetwork network4 = new FlowNetwork(8);
-        int[][] conns = new int[][] { { 0, 5, 7 }, { 1, 0, 9 }, { 1, 6, 7 }, 
-        { 2, 1, 8 }, { 2, 3, 6 }, { 2, 6, 5 },{ 3, 2, 5 }, { 3, 6, 6 }, { 3, 7, 8 },
-        { 4, 0, 5 }, { 5, 4, 5 }, { 5, 1, 8 }, { 5, 6, 2 }, { 6, 5, 5 }, { 6, 2, 4 },
-         { 6, 7, 3 }, { 7, 3, 5 } };
+        int[][] conns = new int[][] { { 0, 5, 7 }, { 1, 0, 9 }, { 1, 6, 7 },
+                { 2, 1, 8 }, { 2, 3, 6 }, { 2, 6, 5 }, { 3, 2, 5 }, { 3, 6, 6 }, { 3, 7, 8 },
+                { 4, 0, 5 }, { 5, 4, 5 }, { 5, 1, 8 }, { 5, 6, 2 }, { 6, 5, 5 }, { 6, 2, 4 },
+                { 6, 7, 3 }, { 7, 3, 5 } };
         for (int[] conn : conns) {
             network4.addEdge(new FlowEdge(conn[0], conn[1], conn[2]));
         }
         FordFulkerson ff5 = new FordFulkerson(network4, 0, 7);
-       StdOut.println("widest path 2 : " + Arrays.toString(ff5.widestPath()));
+        StdOut.println("widest path 2 : " + Arrays.toString(ff5.widestPath()));
     }
+
+
+
 }
