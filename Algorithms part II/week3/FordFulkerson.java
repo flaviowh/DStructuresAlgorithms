@@ -1,5 +1,6 @@
 package week3;
 
+import Algorithms_Part_I.week2.Stack;
 import edu.princeton.cs.algs4.Queue;
 
 
@@ -7,19 +8,29 @@ public class FordFulkerson {
     private boolean[] marked; // true if s->v path in residual network
     private FlowEdge[] edgeTo; // last edge on s->v path
     private double value; // value of flow
+    private Stack<Integer> fattestPath = new Stack<>(); // finding fattest path
 
     public FordFulkerson(FlowNetwork G, int s, int t) {
-
         value = 0.0;
+        double biggestCapacy = 0;
         while (hasAugmentingPath(G, s, t)) {
-            double bottle = Double.POSITIVE_INFINITY;
+            double bottleneck = Double.POSITIVE_INFINITY;
             for (int v = t; v != s; v = edgeTo[v].other(v)) // compute blottleneck capacity
-                bottle = Math.min(bottle, edgeTo[v].residualCapacityTo(v));
+                bottleneck = Math.min(bottleneck, edgeTo[v].residualCapacityTo(v));
 
-            for (int v = t; v != s; v = edgeTo[v].other(v)) // aurgment flow
-                edgeTo[v].addResidualFlowTo(v, bottle);
+            for (int v = t; v != s; v = edgeTo[v].other(v)) // augment flow
+                edgeTo[v].addResidualFlowTo(v, bottleneck);
 
-            value += bottle;
+            value += bottleneck;
+
+            if(bottleneck > biggestCapacy){  //finding highest cap. path from s to t
+                Stack<Integer> widestPath = new Stack<>();
+                biggestCapacy = bottleneck;
+                for (int x = t; x != s; x = edgeTo[x].from())
+                widestPath.push(x);
+                widestPath.push(s);
+                fattestPath = widestPath;
+            }
         }
     }
 
@@ -40,6 +51,7 @@ public class FordFulkerson {
                 }
             }
         }
+
         return marked[t];
     }
 
@@ -47,10 +59,12 @@ public class FordFulkerson {
         return value;
     }
 
+    public Iterable<Integer> widestPath(){ // returning fattest path
+        return fattestPath;
+    }
 
     public boolean minCut(int v) {
         return marked[v];
     }
-
 
 }

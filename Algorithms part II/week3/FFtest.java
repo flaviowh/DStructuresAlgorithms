@@ -1,5 +1,6 @@
 package week3;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import edu.princeton.cs.algs4.StdOut;
@@ -66,6 +67,52 @@ public class FFtest {
             }
         }
 
-    }
+        // widest path algorithm answer: 0 > 2 > 3 > 4> 6> 7 > 8 > 9
+        FlowNetwork network3 = new FlowNetwork(10);
+        network3.addEdge(new FlowEdge(0, 1, 5));
+        network3.addEdge(new FlowEdge(0, 2, 15));
+        network3.addEdge(new FlowEdge(1, 3, 20));
+        network3.addEdge(new FlowEdge(2, 3, 10));
+        network3.addEdge(new FlowEdge(3, 4, 5));
+        network3.addEdge(new FlowEdge(4, 5, 5));
+        network3.addEdge(new FlowEdge(4, 6, 10));
+        network3.addEdge(new FlowEdge(5, 6, 15));
+        network3.addEdge(new FlowEdge(6, 7, 10));
+        network3.addEdge(new FlowEdge(7, 8, 5));
+        network3.addEdge(new FlowEdge(8, 9, 20));
+        network3.addEdge(new FlowEdge(9, 5, 10));
 
+        FordFulkerson ff3 = new FordFulkerson(network3, 0, 9);
+        StdOut.println("widest path : " + ff3.widestPath());
+
+        // widest path algorithm (from figure)
+
+        FlowNetwork stationsNetwork = new FlowNetwork(7);
+        String[] stations = new String[] { "Maldon", "Feering", "Tiptree", "Clacton", "Blaxhall", "Hardwich",
+                "Dunwich" };
+        int[][] connections = new int[][] { { 0, 1, 11 }, { 0, 2, 8 }, { 0, 3, 40 }, { 1, 2, 3 }, { 1, 5, 46 },
+                { 5, 2, 29 }, { 2, 4, 31 }, { 3, 5, 17 }, { 5, 4, 40 }, { 4, 6, 15 }, { 5, 6, 43 } };
+        for (int[] conn : connections) {
+            stationsNetwork.addEdge(new FlowEdge(conn[0], conn[1], conn[2]));
+        }
+
+        FordFulkerson ff4 = new FordFulkerson(stationsNetwork, 0, 6);
+        for (int i : ff4.widestPath()) {
+            StdOut.println(stations[i]);
+        }
+        // wrong
+
+        FlowNetwork network4 = new FlowNetwork(8);
+        int[][] conns = new int[][] { { 0, 5, 7 }, { 1, 0, 9 }, { 1, 6, 7 }, 
+        { 2, 1, 8 }, { 2, 3, 6 }, { 2, 6, 5 },{ 3, 2, 5 }, { 3, 6, 6 }, { 3, 7, 8 },
+        { 4, 0, 5 }, { 5, 4, 5 }, { 5, 1, 8 }, { 5, 6, 2 }, { 6, 5, 5 }, { 6, 2, 4 },
+         { 6, 7, 3 }, { 7, 3, 5 } };
+        for (int[] conn : conns) {
+            network4.addEdge(new FlowEdge(conn[0], conn[1], conn[2]));
+        }
+        FordFulkerson ff5 = new FordFulkerson(network4, 0, 7);
+        for (int i : ff5.widestPath()) {
+            StdOut.println(i);
+        }
+    }
 }
