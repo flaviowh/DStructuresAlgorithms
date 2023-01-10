@@ -19,7 +19,7 @@ public class BaseballElimination {
     private final int[] remaining;
     private final int[][] vsMatrix;
     private int[] eliminated;
-    private Set<String>[] eliminatedBy;
+    private Map<Integer, Set<String>> eliminatedBy = new HashMap<Integer, Set<String>>();
     private final int sink;
 
     // create a baseball division from given filename in format specified
@@ -33,8 +33,10 @@ public class BaseballElimination {
         losses = new int[numTeams];
         vsMatrix = new int[numTeams][numTeams];
         eliminated = new int[numTeams];
-        eliminatedBy = new Set[numTeams];
         sink = numTeams + 1;
+
+        boolean hasGamesLeft = false;
+        int leadScore = 0;
 
         String[] lines = input.readAllLines();
         for (int i = 1; i < lines.length; i++) { // skip the first line
@@ -45,28 +47,54 @@ public class BaseballElimination {
             remaining[i - 1] = Integer.parseInt(fields[3]);
             for (int x = 1; x < numTeams + 1; x++) {
                 int matches = Integer.parseInt(fields[3 + x]);
+                if (!hasGamesLeft && matches > 0)
+                    hasGamesLeft = true;
                 vsMatrix[i - 1][x - 1] = matches;
+            }
+
+            if (Integer.parseInt(fields[1]) > leadScore) {
+                leadScore = Integer.parseInt(fields[1]);
             }
         }
 
-        calculateEliminations();
+        calculateEliminations(leadScore, hasGamesLeft);
     }
 
-    private void calculateEliminations() {
+    private void calculateEliminations(int leadScore, boolean hasGamesLeft) {
+
         if (numTeams == 1) {
             eliminated[0] = wins[0] < losses[0] ? 0 : 1;
             return;
         }
 
+        if (!hasGamesLeft) {
+            finishedSeasonSummary(leadScore);
+            return;
+        }
+
         for (String team : teams.keySet()) {
             int id = teams.get(team);
-            eliminatedBy[id] = new HashSet<String>(); // empty set
+            eliminatedBy.put(id, new HashSet<String>()); // empty set
 
             if (easilyEliminated(id) || networkEliminated(id)) {
                 eliminated[id] = 1;
             }
 
         }
+    }
+
+    private void finishedSeasonSummary(int leadScore) {
+        Set<String> winners = new HashSet<String>();
+        for (String team : teams.keySet()) {
+            if (wins[teams.get(team)] == leadScore) {
+                eliminated[teams.get(team)] = 0;
+                winners.add(team);
+            } else {
+                eliminated[teams.get(team)] = 1;
+                eliminatedBy.put(teams.get(team), winners);
+            }
+        }
+        return;
     }
 
     public Iterable<String> certificateOfElimination(String team) {
@@ -79,7 +107,7 @@ public class BaseballElimination {
             return null;
         }
 
-        return eliminatedBy[id];
+        return eliminatedBy.get(id);
     }
 
     private boolean easilyEliminated(int id) {
@@ -90,7 +118,7 @@ public class BaseballElimination {
             if (wins[teams.get(team)] > possibleWins) {
                 isOut = true;
 
-                eliminatedBy[id].add(team);
+                eliminatedBy.get(id).add(team);
 
             }
         }
@@ -116,7 +144,7 @@ public class BaseballElimination {
                     for (Map.Entry<String, Integer> entry : teams.entrySet()) {
                         if (entry.getValue().equals(i - 1)) {
                             String name = entry.getKey();
-                            eliminatedBy[teamId].add(name);
+                            eliminatedBy.get(teamId).add(name);
                             break;
                         }
 
@@ -129,7 +157,7 @@ public class BaseballElimination {
 
     // make the graph edges
     private FlowNetwork matchesNetwork(int teamId) {
-        Set<FlowEdge> edgesSet = new HashSet();
+        Set<FlowEdge> edgesSet = new HashSet<FlowEdge>();
         Set<String> matchSet = new HashSet<>();
         // how many points the focus team can make
         int focusTeamMaxWins = wins[teamId] + remaining[teamId];
@@ -224,7 +252,7 @@ public class BaseballElimination {
     }
 
     public static void main(String[] args) {
-        String path = "C:\\Users\\flavi\\Desktop\\baseball\\teams4.txt";
+        String path = "Algorithms part II\\week3\\assignment\\teams5.txt";
         BaseballElimination division = new BaseballElimination(path);
         // division.readTest();
 
