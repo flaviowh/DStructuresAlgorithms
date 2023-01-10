@@ -1,5 +1,7 @@
 package week4;
 
+import edu.princeton.cs.algs4.Queue;
+
 public class TrieST<Type> {
     private static final int R = 256;
     private Node root = new Node();
@@ -78,4 +80,55 @@ public class TrieST<Type> {
         return null;
     }
 
+    public Iterable<String> keys() {
+        Queue<String> queue = new Queue<String>();
+        collect(root, "", queue);
+        return queue;
+    }
+
+    private void collect(Node x, String prefix, Queue<String> q) {
+        // inorder traversal
+        if (x == null)
+            return;
+
+        if (x.val != null)
+            q.enqueue(prefix);
+
+        for (char c = 0; c < R; c++)
+            collect(x.next[c], prefix + c, q);
+    }
+
+    public Iterable<String> keysWithPrefix(String prefix) {
+        Queue<String> queue = new Queue<String>();
+        Node x = get(root, prefix, 0);
+        collect(x, prefix, queue);
+        return queue;
+    }
+
+    public String longestPrefixOf(String query) {
+        int length = search(root, query, 0, 0);
+        return query.substring(0, length);
+    }
+
+    private int search(Node x, String query, int d, int length) {
+        if (x == null)
+            return length;
+        if (x.val != null)
+            length = d;
+        if (d == query.length())
+            return length;
+        char c = query.charAt(d);
+        return search(x.next[c], query, d + 1, length);
+    }
+
+    public static void main(String[] args) {
+        TrieST<String> tst = new TrieST<>();
+        tst.put("Pikachu", "Rayshu");
+        tst.put("Charmander", "Charizard");
+        for (String i : tst.keysWithPrefix("P")) {
+            System.out.println(i);
+        }
+    }
+
+    // This data type can be space inefficient
 }
