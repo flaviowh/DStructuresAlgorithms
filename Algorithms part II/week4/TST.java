@@ -30,6 +30,7 @@ public class TST<Type> {
             x.mid = put(x.mid, key, val, d + 1);
         else
             x.val = val;
+            
         return x;
     }
 

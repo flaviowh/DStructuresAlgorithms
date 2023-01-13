@@ -65,6 +65,7 @@ public class TrieST<Type> {
 
         if (d == key.length()) {
             x.val = null;
+            
         } else {
             char c = key.charAt(d);
             x.next[c] = delete(x.next[c], key, d + 1);
