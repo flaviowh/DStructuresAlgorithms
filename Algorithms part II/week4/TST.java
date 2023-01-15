@@ -1,5 +1,7 @@
 package week4;
 
+import edu.princeton.cs.algs4.In;
+
 // Ternary search tree
 public class TST<Type> {
     private Node root;
@@ -59,7 +61,12 @@ public class TST<Type> {
             return x;
     }
     public static void main(String[] args) {
-        
+        TST<String> tst = new TST<>();
+        String path = "Algorithms part II\\week4\\assignment\\dictionary-twl06.txt";
+        String[] words = new In(path).readAllLines();
+        for(String word: words)
+            tst.put(word, word);
+            
     }
 
     public String[] keys() {

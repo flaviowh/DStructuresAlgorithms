@@ -1,6 +1,8 @@
 package week4;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.StdOut;
 
 public class TrieST<Type> {
     private static final int R = 256;
@@ -10,6 +12,7 @@ public class TrieST<Type> {
         private Object val;
         private Node[] next = new Node[R];
     }
+
 
     public void put(String key, Type val) {
         root = put(root, key, val, 0);
@@ -124,11 +127,11 @@ public class TrieST<Type> {
 
     public static void main(String[] args) {
         TrieST<String> tst = new TrieST<>();
-        tst.put("Pikachu", "Rayshu");
-        tst.put("Charmander", "Charizard");
-        for (String i : tst.keysWithPrefix("P")) {
-            System.out.println(i);
-        }
+        String path = "C:\\Users\\flavi\\Desktop\\boggle\\dictionary-yawl.txt";
+        String[] words = new In(path).readAllLines();
+        for(String word : words)
+            tst.put(word, word);
+        StdOut.println(tst.keysWithPrefix("ZAP"));
     }
 
     // This data type can be space inefficient
