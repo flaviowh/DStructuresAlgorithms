@@ -1,11 +1,10 @@
 package week4.StringSearch;
 
-
 public class KMP {
     private final String pat;
     private int M;
     private int[][] dfa;
-    private int R = 256; 
+    private int R = 256;
     private final int NOT_FOUND = -1;
 
     public KMP(String pat) {
