@@ -23,11 +23,11 @@ public class FordFulkerson {
 
             value += bottleneck;
 
-            if(bottleneck > biggestCapacy){  //finding highest cap. path from s to t
+            if (bottleneck > biggestCapacy) { // finding highest cap. path from s to t
                 Stack<Integer> widestPath = new Stack<>();
                 biggestCapacy = bottleneck;
                 for (int x = t; x != s; x = edgeTo[x].from())
-                widestPath.push(x);
+                    widestPath.push(x);
                 widestPath.push(s);
                 fattestPath = widestPath;
             }

@@ -31,9 +31,9 @@ public class LinearProbingHashST<Key, Value> {
 
 // The easiest way to implement delete is to find and remove the key–value pair 
 // and then to reinsert all of the key–value pairs in the same cluster that appear
-//  after the deleted key–value pair. If the hash table doesn't get too full, the
-//   expected number of key–value pairs to reinsert will be a small constant.
+// after the deleted key–value pair. If the hash table doesn't get too full, the
+// expected number of key–value pairs to reinsert will be a small constant.
 
 // An alternative is to flag the deleted linear-probing table entry so that it is
-//  skipped over during a search but is used for an insertion. If there are too 
-//  many flagged entries, create a new hash table and rehash all key–value pairs.
+// skipped over during a search but is used for an insertion. If there are too 
+// many flagged entries, create a new hash table and rehash all key–value pairs.

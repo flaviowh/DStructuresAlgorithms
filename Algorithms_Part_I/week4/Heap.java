@@ -48,9 +48,7 @@ public class Heap {
 
     public static void main(String[] args) {
         Comparable[] arr = { 32, 10, 43, 12, 3, 9, 90, 1, 0 };
-
-        Heap hs = new Heap();
-        hs.sort(arr);
+        sort(arr);
         StdOut.println(Arrays.toString(arr));
     }
 }
