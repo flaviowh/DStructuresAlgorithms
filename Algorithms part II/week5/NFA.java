@@ -1,9 +1,9 @@
 package week5;
 
-import Algorithms_Part_I.week2.Stack;
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.DirectedDFS;
+import edu.princeton.cs.algs4.Stack;
 
 public class NFA {
     private char[] re; // match transitions
@@ -28,9 +28,13 @@ public class NFA {
             for (int v : pc) {
                 if (v == M)
                     continue;
+
                 if ((re[v] == txt.charAt(i)) || re[v] == '.')
                     states.add(v + 1);
             }
+
+            if (states.isEmpty())
+                continue;
 
             dfs = new DirectedDFS(G, states);
             pc = new Bag<Integer>();
@@ -42,9 +46,11 @@ public class NFA {
         for (int v : pc)
             if (v == M)
                 return true;
+
         return false;
     }
 
+    // Building the NFA as a digraph
     private Digraph buildEpsilonTransitionDigraph() {
         Digraph G = new Digraph(M + 1);
         Stack<Integer> ops = new Stack<Integer>();
@@ -52,7 +58,8 @@ public class NFA {
             int lp = i;
 
             if (re[i] == '(' || re[i] == '|')
-                ops.push(i);
+                ops.push(i); 
+
             else if (re[i] == ')') {
                 int or = ops.pop();
                 if (re[or] == '|') {
@@ -72,5 +79,12 @@ public class NFA {
                 G.addEdge(i, i + 1);
         }
         return G;
+    }
+
+    public static void main(String[] args) {
+        String rgx = "pika(chu|xhu)";
+        String txt = "ash loves his pikaxdhxu, his bulbasaur and charmander";
+        NFA nfa = new NFA(rgx);
+        System.out.println(nfa.recognizes(txt));
     }
 }
