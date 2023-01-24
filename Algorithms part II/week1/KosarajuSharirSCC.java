@@ -36,7 +36,7 @@ public class KosarajuSharirSCC {
     }
 
     public static void main(String[] args) {
-        Digraph dg = new Digraph(12);
+        Digraph dg = new Digraph(13);
         dg.addEdge(0, 1);
         dg.addEdge(0, 5);
         dg.addEdge(2, 0);
